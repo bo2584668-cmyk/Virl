@@ -1,0 +1,883 @@
+/* ====================== المتغيرات العامة ====================== */
+:root {
+    --primary: #00d4ff;
+    --bg: #050505;
+    --card: #0d1117;
+    --text: #ffffff;
+    --border: rgba(255,255,255,0.1);
+    --danger: #ff4d4d;
+    --success: #2ecc71;
+    --reader-bg: #0f0f0f;
+    --toolbar-bg: rgba(20, 20, 20, 0.8);
+    --accent: #ff0055;
+}
+
+[data-theme="light"] {
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --primary: #007bff;
+    --border: rgba(0,0,0,0.1);
+}
+[data-theme="purple"] {
+    --bg: #1a0b2e;
+    --card: #2d1454;
+    --text: #ffffff;
+    --primary: #bc13fe;
+    --border: rgba(255,255,255,0.1);
+}
+[data-theme="forest"] {
+    --bg: #0a1a0a;
+    --card: #142d14;
+    --text: #ffffff;
+    --primary: #2ecc71;
+    --border: rgba(255,255,255,0.1);
+}
+[data-theme="sunset"] {
+    --bg: #1a0f0f;
+    --card: #2d1414;
+    --text: #ffffff;
+    --primary: #e67e22;
+    --border: rgba(255,255,255,0.1);
+}
+[data-theme="gold"] {
+    --bg: #11110a;
+    --card: #222214;
+    --text: #ffffff;
+    --primary: #f1c40f;
+    --border: rgba(255,255,255,0.1);
+}
+
+/* ====================== القواعد العامة ====================== */
+* {
+    box-sizing: border-box;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ====================== شاشة البداية ====================== */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050505;
+    overflow: hidden;
+}
+
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #1a1a24 0%, #050505 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.gold-text {
+    background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.top-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    animation: fadeInDown 1.2s ease forwards;
+    opacity: 0;
+}
+
+.logo-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(135deg, #bf953f, #fcf6ba, #aa771c);
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+    margin-bottom: 25px;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 1s ease 0.3s forwards, pulseGlow 2s infinite alternate 1.3s;
+}
+
+.logo-container img {
+    width: 96%;
+    height: 96%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #050505;
+}
+
+.library-name {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    margin: 0;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeInUp 1.2s ease 0.6s forwards;
+}
+
+.footer-text {
+    position: absolute;
+    bottom: 50px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.6rem;
+    color: #d4af37;
+    opacity: 0;
+    animation: fadeIn 1.2s ease 1s forwards;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+@keyframes pulseGlow {
+    from { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); transform: scale(1); }
+    to { box-shadow: 0 0 50px rgba(212, 175, 55, 0.8); transform: scale(1.03); }
+}
+
+.hide-splash {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* ====================== شاشة التحميل ====================== */
+#loader {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #000000, #001f3f);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+#loader.fade-out {
+    opacity: 0;
+}
+
+.loader-icon-container {
+    position: relative;
+    animation: fadeInUp 1s ease-out;
+}
+
+.loader-logo {
+    width: 220px;
+    height: 220px;
+    border-radius: 30px;
+    border: 3px solid var(--primary);
+    box-shadow: 0 0 30px var(--primary), 0 0 60px rgba(0, 212, 255, 0.5);
+    object-fit: cover;
+    animation: pulseGlow 2s infinite;
+}
+
+.loader-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--primary);
+    text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(0, 212, 255, 0.7);
+    animation: scalePulse 1.5s infinite;
+}
+
+@keyframes scalePulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.loader-title {
+    font-size: 3rem;
+    font-weight: 900;
+    text-shadow: 0 0 20px var(--primary), 0 0 40px rgba(0, 212, 255, 0.5);
+    margin: 30px 0 10px;
+    letter-spacing: 2px;
+    animation: fadeInUp 1s ease-out 0.5s forwards;
+    opacity: 0;
+}
+
+.loader-subtitle {
+    font-size: 1rem;
+    font-style: italic;
+    color: #ccc;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    font-family: 'Cairo';
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 1s forwards;
+}
+
+/* ====================== رأس الصفحة والشريط الجانبي ====================== */
+.header {
+    padding: 30px 0;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#sidebarToggle {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 100;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    display: none;
+}
+
+.user-logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 20px var(--primary);
+    object-fit: cover;
+}
+
+.rivl-name {
+    font-size: 2rem;
+    font-weight: 900;
+    text-shadow: 0 0 15px var(--primary);
+    margin: 0 15px;
+    animation: lightning 1s infinite alternate;
+}
+
+@keyframes lightning {
+    0% { text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(0, 212, 255, 0.7); }
+    50% { text-shadow: 0 0 25px #fff, 0 0 50px rgba(255, 255, 255, 0.8); }
+    100% { text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(0, 212, 255, 0.7); }
+}
+
+.header-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1;
+}
+
+.floating-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    z-index: 9999;
+    animation: pulse 2s infinite, float 3s ease-in-out infinite;
+    display: none;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,212,255,0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(0,212,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,212,255,0); }
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: var(--card);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+    padding: 20px;
+    border-right: 1px solid var(--border);
+}
+
+#sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar-item {
+    display: block;
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+}
+
+.sidebar-item:hover {
+    background: var(--primary);
+    color: #000;
+}
+
+/* ====================== اللوحات الزجاجية ====================== */
+.glass-panel {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    padding: 35px;
+    width: 90%;
+    max-width: 400px;
+    margin: 40px auto;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.3);
+    color: var(--text);
+    text-align: center;
+    font-family: 'Cairo';
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.btn {
+    background: linear-gradient(45deg, #0056b3, var(--primary));
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--primary);
+}
+
+/* ====================== المحتوى الرئيسي ====================== */
+#libraryContent {
+    display: none;
+    padding: 20px;
+    max-width: 1300px;
+    margin: auto;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.status-chip {
+    background: var(--card);
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: 1px solid var(--primary);
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.status-chip:hover {
+    background: var(--primary);
+    color: #000;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 12px;
+    background: var(--card);
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+.card-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--primary);
+    color: #000;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 900;
+    z-index: 5;
+}
+
+.preview {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #111;
+    cursor: pointer;
+}
+
+.title-edit {
+    font-weight: 700;
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    margin: 12px 0 5px 0;
+}
+
+.book-meta {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.book-author {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin: 5px 0;
+}
+
+.card-btns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: auto;
+}
+
+.btn-s {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: #fff;
+}
+
+.book-rating {
+    color: #f1c40f;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.book-description {
+    font-size: 0.8rem;
+    color: #bbb;
+    text-align: center;
+    margin-bottom: 10px;
+    height: 2.4em;
+    overflow: hidden;
+}
+
+.book-progress {
+    font-size: 0.8rem;
+    color: var(--success);
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.book-reading-time {
+    font-size: 0.8rem;
+    color: #00d4ff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* ====================== صفحة الإعدادات ====================== */
+.settings-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: var(--card);
+    border-radius: 25px;
+    padding: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: fadeIn 0.5s ease;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.settings-header h2 {
+    color: var(--primary);
+    margin: 0;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.btn-close:hover {
+    color: var(--danger);
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.settings-content label {
+    font-weight: bold;
+    margin-bottom: -10px;
+}
+
+/* ====================== المودالات ====================== */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    z-index: 2000;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.modal-box {
+    background: var(--card);
+    max-width: 450px;
+    margin: 50px auto;
+    padding: 25px;
+    border-radius: 25px;
+    border: 1px solid var(--primary);
+}
+
+/* ====================== مشغل PDF ====================== */
+.rivl-reader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--reader-bg);
+    z-index: 10000;
+    font-family: 'Cairo', sans-serif;
+}
+
+.reader-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.reader-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--toolbar-bg);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    z-index: 10;
+}
+
+.t-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.t-btn {
+    background: rgba(255,255,255,0.05);
+    border: none;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.t-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+}
+
+.close-btn {
+    background: rgba(255, 0, 0, 0.2);
+}
+
+.page-info {
+    background: rgba(0,0,0,0.3);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.page-info input {
+    width: 40px;
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    text-align: center;
+    font-size: 1rem;
+    outline: none;
+}
+
+#viewer-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    padding: 40px 10px;
+    background: #1a1a1a;
+    transition: 0.4s;
+}
+
+#canvas-wrapper {
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    transition: transform 0.3s ease;
+    position: relative;
+    display: flex;
+}
+
+#canvas-left, #canvas-right {
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+#draw-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    cursor: crosshair;
+}
+
+.floating-actions {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: flex;
+    gap: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    opacity: 0.5;
+    transition: 0.3s;
+}
+
+.floating-actions:hover {
+    opacity: 1;
+    bottom: 35px;
+}
+
+.f-btn {
+    background: transparent;
+    border: none;
+    color: #ddd;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: 'Cairo';
+}
+
+.f-btn:hover {
+    color: var(--accent);
+}
+
+.v-sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.2);
+}
+
+.mode-sepia {
+    background: #f4ecd8 !important;
+}
+.mode-sepia canvas {
+    filter: sepia(0.6) contrast(1.1);
+}
+.mode-dark {
+    background: #000 !important;
+}
+.mode-dark canvas {
+    filter: invert(0.9) hue-rotate(180deg);
+}
+
+.custom-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+}
+
+#draw-tools {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    background: var(--toolbar-bg);
+    padding: 10px;
+    border-radius: 10px;
+}
+#draw-tools button, #draw-tools input {
+    margin: 5px 0;
+}
+
+/* ====================== التذييل والتنبيهات ====================== */
+.footer {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+#toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: #000;
+    padding: 12px 30px;
+    border-radius: 15px;
+    font-weight: 800;
+    display: none;
+    z-index: 5000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* ====================== أزرار التواصل ====================== */
+.contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(45deg, #0056b3, var(--primary));
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.contact-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--primary);
+}
+
+.contact-icon {
+    font-size: 1.5rem;
+}
+
+/* ====================== تحسينات للأجهزة الصغيرة ====================== */
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+    }
+    .controls {
+        grid-template-columns: 1fr;
+    }
+    .settings-container {
+        margin: 20px;
+        padding: 20px;
+    }
+}
