@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rivl - المكتبة الرقمية</title>
+    
+    <!-- أيقونة الموقع -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- تحسينات المشاركة الاجتماعية -->
+    <meta property="og:title" content="rivl">
+    <meta property="og:description" content="مكتبتي الرقمية المتكاملة للكتب والملخصات">
+    <meta property="og:image" content="social-preview.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- دعم PWA (اختصار كتطبيق) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="rivl">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <meta name="theme-color" content="#050505">
+    
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- ورقة الأنماط الرئيسية -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="dark">
+
+    <!-- ====================== شاشة البداية ====================== -->
+    <div id="splash-screen">
+        <div class="top-badge gold-text">#1</div>
+        <div class="logo-container">
+            <img src="https://i.ibb.co/Pvk3ZKMK/image.jpg" alt="rivl Logo">
+        </div>
+        <h1 class="library-name gold-text">rivl</h1>
+        <div class="footer-text">developed by rivl</div>
+    </div>
+
+    <!-- ====================== شاشة التحميل ====================== -->
+    <div id="loader">
+        <div class="loader-icon-container">
+            <img src="favicon.png" class="loader-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1043/1043322.png'">
+            <div class="loader-badge">#1</div>
+        </div>
+        <h1 class="loader-title">rivl</h1>
+        <p class="loader-subtitle">developed by rivl</p>
+    </div>
+
+    <!-- البadge العائم -->
+    <div class="floating-badge" id="floatingBadge">rivl # 1</div>
+    
+    <!-- رأس الصفحة -->
+    <div class="header">
+        <button id="sidebarToggle">☰</button>
+        <div class="header-logo-container">
+            <img src="favicon.png" class="user-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1043/1043322.png'">
+            <div class="rivl-name">rivl</div>
+        </div>
+    </div>
+
+    <!-- الشريط الجانبي -->
+    <div id="sidebar">
+        <div id="user-name-display" style="text-align: center; font-weight: bold; padding: 10px; color: var(--primary);"></div>
+        <div class="sidebar-item" onclick="playAudio('click'); openProfile()">👤 أنا</div>
+        <div class="sidebar-item" id="settingsBtn" onclick="playAudio('click'); openSettingsPage()">⚙️ الإعدادات</div>
+        <div class="sidebar-item" onclick="playAudio('click'); openContact()">📞 تواصل معنا</div>
+        <div class="sidebar-item" onclick="playAudio('click'); openDownloadBooks()">📚 تنزيل كتب</div>
+        <div class="sidebar-item" onclick="playAudio('click'); openAboutUs()">ℹ️ لمحة عنا</div>
+    </div>
+
+    <!-- ====================== الشاشات ====================== -->
+    
+    <!-- شاشة الاختيار الأولية -->
+    <div id="initialScreen" class="glass-panel" style="display:none">
+        <h2 style="color:var(--primary); margin-top:0; font-size:1.8rem;">مرحباً بك في rivl 🌀</h2>
+        <p style="margin:25px 0 35px; font-size:1.1rem; line-height:1.5;">اختر كيف تريد البدء:</p>
+        
+        <button class="btn" onclick="startWithoutPassword()" style="margin-bottom:18px; background:linear-gradient(45deg,#2ecc71,#00d4ff); font-size:1.1rem; padding:16px;">
+            ⏩ ابدأ بدون كلمة مرور
+        </button>
+        
+        <button class="btn" onclick="showCreatePasswordModal()" style="font-size:1.1rem; padding:16px;">
+            🔐 أنشئ كلمة مرور الآن
+        </button>
+        
+        <p style="font-size:0.85rem; color:#888; margin-top:40px;">يمكنك إضافة أو تغيير كلمة المرور وسؤال الأمان في أي وقت من قسم الإعدادات</p>
+    </div>
+
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginPage" class="glass-panel" style="display:none">
+        <h2 style="color:var(--primary); margin-top:0">أهلاً بك يا بطل 🌀</h2>
+        <input type="password" id="passIn" placeholder="كلمة المرور">
+        <button class="btn" onclick="login()">دخول للمكتبة</button>
+        
+        <button class="btn" onclick="playAudio('click'); openContact()" style="margin-top:15px; background:linear-gradient(45deg,#6f42c1,var(--primary));">📞 تواصل معنا</button>
+        <button class="btn" onclick="playAudio('click'); openAboutUs()" style="margin-top:10px; background:linear-gradient(45deg,#198754,var(--primary));">ℹ️ لمحة عنا</button>
+        
+        <p onclick="playAudio('click'); showPage('secPage')" style="cursor:pointer; font-size:0.8rem; margin-top:20px; color:#555">هل نسيت كلمة المرور؟</p>
+    </div>
+
+    <!-- شاشة سؤال الأمان -->
+    <div id="secPage" class="glass-panel" style="display:none">
+        <h3 style="color:var(--primary)">تحقق الأمان</h3>
+        <p style="font-size:0.9rem" id="secQuestionDisplay">ما هو طولك؟</p>
+        <input type="text" id="secAns" placeholder="اكتب الإجابة هنا">
+        <button class="btn" onclick="checkSec()">تأكيد الهوية</button>
+        <button class="btn" style="background:transparent; color:#777; margin-top:10px" onclick="playAudio('click'); showPage('loginPage')">رجوع</button>
+    </div>
+
+    <!-- ====================== المحتوى الرئيسي (المكتبة) ====================== -->
+    <div id="libraryContent" style="display:none;">
+        <div class="top-nav">
+            <div style="display:flex; gap:10px">
+                <div class="status-chip" onclick="playAudio('popup');" id="storageChip">💾 المساحة: <span id="totalStorage">0 KB</span></div>
+                <div class="status-chip" onclick="playAudio('trash'); showBin()" style="border-color:var(--danger); color:var(--danger)">🗑️ المحذوفات (<span id="binCount">0</span>)</div>
+            </div>
+            <div style="display:flex; gap:10px">
+                <button class="status-chip" style="background:#198754; color:#fff; border:none" onclick="playAudio('success'); exportData()">📤 تصدير نسخة</button>
+                <button class="status-chip" style="background:#6f42c1; color:#fff; border:none" onclick="playAudio('click'); document.getElementById('importFile').click()">📥 استيراد نسخة</button>
+                <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+            </div>
+        </div>
+
+        <!-- شريط التحكم في المكتبة -->
+        <div class="controls">
+            <input type="text" id="search" placeholder="🔍 ابحث عن اسم الكتاب أو الوصف..." oninput="render()">
+            <select id="catFilter" onchange="playAudio('click'); render()">
+                <option value="all">📁 جميع التصنيفات</option>
+                <option value="كتب">📚 كتب</option>
+                <option value="روايات">🎭 روايات</option>
+                <option value="ملخصات">📝 ملخصات</option>
+                <option value="كتب دراسية">📖 كتب دراسية</option>
+                <option value="أخرى">✨ أخرى</option>
+            </select>
+            <select id="sort" onchange="playAudio('click'); render()">
+                <option value="new">🕒 الأحدث</option>
+                <option value="az">🔤 أبجدي</option>
+            </select>
+            <button class="btn" onclick="playAudio('popup'); document.getElementById('fileIn').click()">➕ رفع PDF</button>
+            <input type="file" id="fileIn" accept=".pdf" style="display:none" onchange="upload(event)">
+        </div>
+
+        <!-- شبكة الكتب -->
+        <div class="grid" id="grid"></div>
+    </div>
+
+    <!-- ====================== صفحة الإعدادات (بدلاً من المودال) ====================== -->
+    <div id="settingsPage" style="display:none;" class="settings-container">
+        <div class="settings-header">
+            <h2>⚙️ الإعدادات</h2>
+            <button class="btn-close" onclick="closeSettingsPage()">✕</button>
+        </div>
+        <div class="settings-content">
+            <label>المظهر:</label>
+            <select id="themeSelect" onchange="playAudio('click'); setTheme(this.value)">
+                <option value="dark">داكن</option>
+                <option value="light">فاتح</option>
+                <option value="purple">بنفسجي</option>
+                <option value="forest">الغابة</option>
+                <option value="sunset">غروب الشمس</option>
+                <option value="gold">الذهبي</option>
+            </select>
+
+            <label>اللغة:</label>
+            <button class="btn" onclick="playAudio('click'); toggleLanguage()">🌐 تغيير اللغة إلى الإنجليزية</button>
+
+            <label>كلمة المرور وسؤال الأمان:</label>
+            <button class="btn" onclick="playAudio('click'); openPassChangeModal()">🔑 تغيير كلمة المرور</button>
+
+            <label>الصوت:</label>
+            <button class="btn" onclick="playAudio('click'); openSoundSettings()">🔊 إعدادات الصوت</button>
+
+            <label>إدارة البيانات:</label>
+            <button class="btn" style="background:var(--danger)" onclick="playAudio('trash'); deleteAllFiles()">🗑️ حذف كل الملفات</button>
+        </div>
+    </div>
+
+    <!-- باقي المودالات (لنقل إنشاء الباسورد، تغيير الباسورد، السلة، التواصل، إلخ) -->
+    <div id="createPassModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary); margin-top:0">إنشاء كلمة المرور الأولية وسؤال الأمان</h4>
+        <label>كلمة المرور:</label>
+        <input type="password" id="initPass" placeholder="أدخل كلمة مرور قوية">
+        <label>سؤال الأمان (مثال: ما هو طولك؟):</label>
+        <input type="text" id="initSecQ" placeholder="سؤال الأمان">
+        <label>إجابة سؤال الأمان:</label>
+        <input type="text" id="initSecA" placeholder="الإجابة السرية">
+        <button class="btn" onclick="saveInitialPass()">حفظ ودخول المكتبة</button>
+        <button class="btn" style="background:#333; margin-top:10px" onclick="closeCreateModal()">رجوع</button>
+    </div></div>
+
+    <div id="passChangeModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary)">تغيير كلمة المرور وسؤال الأمان</h4>
+        <label>كلمة المرور الجديدة:</label>
+        <input type="password" id="newPassInput" placeholder="كلمة مرور جديدة">
+        <label>سؤال الأمان الجديد:</label>
+        <input type="text" id="newSecQuestion" placeholder="سؤال الأمان">
+        <label>إجابة سؤال الأمان:</label>
+        <input type="text" id="newSecAnswer" placeholder="إجابة سؤال الأمان">
+        <button class="btn" onclick="playAudio('success'); saveNewPassAndSec()">حفظ التعديل</button>
+        <button class="btn" style="background:#333; margin-top:10px" onclick="playAudio('click'); closeModals()">إلغاء</button>
+    </div></div>
+
+    <div id="uploadModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary)">إضافة كتاب جديد</h4>
+        <div id="pendingFileName" style="font-size:0.8rem; color:#888; margin-bottom:10px"></div>
+        <label>اسم الكتاب:</label>
+        <input type="text" id="bookTitleInput" placeholder="اسم الكتاب">
+        <label>اسم المؤلف:</label>
+        <input type="text" id="bookAuthorInput" placeholder="اسم المؤلف">
+        <label>التصنيف:</label>
+        <select id="selectedCat">
+            <option value="كتب">📚 كتب</option>
+            <option value="روايات">🎭 روايات</option>
+            <option value="ملخصات">📝 ملخصات</option>
+            <option value="كتب دراسية">📖 كتب دراسية</option>
+            <option value="أخرى">✨ أخرى</option>
+        </select>
+        <label>وصف الكتاب:</label>
+        <input type="text" id="bookDescInput" placeholder="اكتب وصفاً مختصراً">
+        <label>التقييم:</label>
+        <select id="bookRatingInput">
+            <option value="5">⭐⭐⭐⭐⭐ (ممتاز)</option>
+            <option value="4">⭐⭐⭐⭐ (جيد جداً)</option>
+            <option value="3">⭐⭐⭐ (متوسط)</option>
+            <option value="2">⭐⭐ (ضعيف)</option>
+            <option value="1">⭐ (سيء)</option>
+        </select>
+        <button class="btn" id="confirmUploadBtn">تأكيد الرفع</button>
+        <button class="btn" style="background:#333; margin-top:10px" onclick="playAudio('click'); closeModals()">إلغاء</button>
+    </div></div>
+
+    <div id="editBookModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary)">تعديل معلومات الكتاب</h4>
+        <label>اسم الكتاب:</label>
+        <input type="text" id="editTitle" placeholder="اسم الكتاب">
+        <label>اسم المؤلف:</label>
+        <input type="text" id="editAuthor" placeholder="اسم المؤلف">
+        <label>التصنيف:</label>
+        <select id="editCat">
+            <option value="كتب">📚 كتب</option>
+            <option value="روايات">🎭 روايات</option>
+            <option value="ملخصات">📝 ملخصات</option>
+            <option value="كتب دراسية">📖 كتب دراسية</option>
+            <option value="أخرى">✨ أخرى</option>
+        </select>
+        <label>وصف الكتاب:</label>
+        <input type="text" id="editDesc" placeholder="اكتب وصفاً مختصراً">
+        <label>التقييم:</label>
+        <select id="editRating">
+            <option value="5">⭐⭐⭐⭐⭐ (ممتاز)</option>
+            <option value="4">⭐⭐⭐⭐ (جيد جداً)</option>
+            <option value="3">⭐⭐⭐ (متوسط)</option>
+            <option value="2">⭐⭐ (ضعيف)</option>
+            <option value="1">⭐ (سيء)</option>
+        </select>
+        <button class="btn" onclick="playAudio('success'); saveEditBook()">💾 حفظ التعديلات</button>
+        <button class="btn" style="background:#333; margin-top:10px" onclick="playAudio('click'); closeModals()">إلغاء</button>
+    </div></div>
+
+    <div id="binModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--danger)">السلة</h4>
+        <div id="binList"></div>
+        <button class="btn" style="background:var(--danger)" onclick="emptyBin()">إفراغ الكل</button>
+        <button class="btn" style="background:#333; margin-top:10px" onclick="playAudio('click'); closeModals()">إغلاق</button>
+    </div></div>
+
+    <div id="contactModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary); margin-top:0">تواصل معنا 📞</h4>
+        <a href="tel:01055662785" class="contact-btn"><span class="contact-icon"><i class="fas fa-phone"></i></span> اتصال</a>
+        <a href="https://wa.me/01055662785" class="contact-btn"><span class="contact-icon"><i class="fab fa-whatsapp"></i></span> واتساب</a>
+        <a href="https://www.facebook.com/profile.php?id=61583039190517&locale=ar_AR" class="contact-btn"><span class="contact-icon"><i class="fab fa-facebook"></i></span> فيسبوك</a>
+        <a href="https://www.instagram.com/ziadalzoz1020/" class="contact-btn"><span class="contact-icon"><i class="fab fa-instagram"></i></span> إنستغرام</a>
+        <button class="btn" style="background:#333; margin-top:15px" onclick="playAudio('click'); closeModals()">إغلاق</button>
+    </div></div>
+
+    <div id="downloadBooksModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary); margin-top:0">تنزيل كتب 📚</h4>
+        <a href="https://www.noor-book.com/" class="contact-btn"><span class="contact-icon">📖</span> مكتبة نور</a>
+        <a href="https://www.kotobati.com/" class="contact-btn"><span class="contact-icon">📖</span> مكتبة كتوباتي</a>
+        <a href="https://books-library.website/" class="contact-btn"><span class="contact-icon">📖</span> مكتبة العرب</a>
+        <a href="https://ellibrary.moe.gov.eg/" class="contact-btn"><span class="contact-icon">📖</span> مكتبة الوزارة</a>
+        <button class="btn" style="background:#333; margin-top:15px" onclick="playAudio('click'); closeModals()">إغلاق</button>
+    </div></div>
+
+    <div id="aboutUsModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary); margin-top:0">لمحة عنا ℹ️</h4>
+        <p style="text-align: center; font-size: 1rem; line-height: 1.5;">rivl هي مكتبة رقمية متكاملة ومتطورة لتخزين وإدارة الكتب الإلكترونية والملخصات. تم تصميمها وتطويرها بالكامل بواسطة rivl، وهي توفر واجهة مستخدم احترافية تدعم اللغة العربية بالكامل، مع خيارات للتحكم في المظهر (مثل الداكن، الفاتح، البنفسجي، والمزيد). تتيح المكتبة رفع الكتب بتنسيق PDF، عرضها في مشغل متقدم يدعم التكبير، التصغير، التدوير، الطباعة، والتنزيل، بالإضافة إلى خيارات الأمان مثل كلمة المرور وسؤال الاستعادة. كما تدعم تصدير واستيراد النسخ الاحتياطية، إدارة التصنيفات (كتب، روايات، ملخصات، أخرى)، والبحث المتقدم. المكتبة مبنية على تقنيات حديثة مثل IndexedDB للتخزين المحلي، مما يجعلها سريعة وآمنة دون الحاجة إلى خوادم خارجية. تهدف إلى تسهيل القراءة والدراسة للمستخدمين في عام 2026 وما بعده، مع دعم للتواصل الاجتماعي والمشاركة.</p>
+        <button class="btn" style="margin-top:20px" onclick="playAudio('click'); shareSite()">📤 شارك الموقع</button>
+        <button class="btn" style="background:#333; margin-top:15px" onclick="playAudio('click'); closeModals()">إغلاق</button>
+    </div></div>
+
+    <div id="profileModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary); margin-top:0">الملف الشخصي 👤</h4>
+        <div id="profileContent"></div>
+        <button class="btn" style="background:#333; margin-top:15px" onclick="playAudio('click'); closeModals()">إغلاق</button>
+    </div></div>
+
+    <div id="addUsernameModal" class="modal"><div class="modal-box">
+        <h4 style="color:var(--primary); margin-top:0">أدخل اسمك</h4>
+        <input type="text" id="usernameInput" placeholder="اسم المستخدم">
+        <button class="btn" onclick="playAudio('success'); saveUsername()">حفظ</button>
+        <button class="btn" style="background:#333; margin-top:10px" onclick="playAudio('click'); closeModals()">إلغاء</button>
+    </div></div>
+
+    <!-- مودال إعدادات الصوت -->
+    <div id="soundSettingsModal" class="modal">
+        <div class="modal-box">
+            <h4 style="color:var(--primary); margin-top:0">إعدادات الصوت 🔊</h4>
+            <p style="margin-bottom:15px; font-size:1.05rem;">اختر صوت الدخول إلى المكتبة:</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 30px;">
+                <button class="btn" onclick="selectLoginSound('engine');" style="background: linear-gradient(45deg, #00d4ff, #007bff);">🚗 محرك سيارة</button>
+                <button class="btn" onclick="selectLoginSound('rocket');" style="background: linear-gradient(45deg, #ff8800, #e67e22);">🚀 صاروخ فضائي</button>
+                <button class="btn" onclick="selectLoginSound('magic');" style="background: linear-gradient(45deg, #bc13fe, #6f42c1);">✨ تأثير سحري</button>
+                <button class="btn" onclick="selectLoginSound('cheer');" style="background: linear-gradient(45deg, #2ecc71, #27ae60);">👏 تصفيق الجمهور</button>
+            </div>
+            <label style="display:block; margin:15px 0 8px; font-weight:bold;">كتم الصوت العام:</label>
+            <button class="btn" id="muteBtn" style="background:var(--danger); width:100%;" onclick="toggleMute()">🔇 كتم الصوت</button>
+            <button class="btn" style="background:#333; margin-top:20px" onclick="playAudio('click'); closeModals()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- مشغل PDF -->
+    <div id="pdfModal" class="rivl-reader-overlay" style="display:none;">
+        <div class="reader-container">
+            <header class="reader-toolbar">
+                <div class="t-section">
+                    <button class="t-btn close-btn" onclick="closeReader()" title="إغلاق">✕</button>
+                    <div class="v-sep"></div>
+                    <h3 id="reader-filename">جاري التحميل...</h3>
+                </div>
+                <div class="t-section nav-controls">
+                    <button class="t-btn" id="prev-pg">◀</button>
+                    <div class="page-info">
+                        <input type="number" id="page-num-input" value="1" min="1">
+                        <span>/</span>
+                        <span id="total-pages">0</span>
+                    </div>
+                    <button class="t-btn" id="next-pg">▶</button>
+                </div>
+                <div class="t-section tools">
+                    <button class="t-btn" id="z-out" title="تصغير">➖</button>
+                    <span id="zoom-percent">100%</span>
+                    <button class="t-btn" id="z-in" title="تكبير">➕</button>
+                    <div class="v-sep"></div>
+                    <button class="t-btn" id="rotate-pdf" title="تدوير">🔄</button>
+                    <button class="t-btn" id="reader-theme" title="وضع القراءة">🌓</button>
+                    <button class="t-btn" id="full-scr" title="ملء الشاشة">📺</button>
+                    <button class="t-btn" id="double-page-toggle" title="وضع الصفحات المزدوجة">📖</button>
+                    <button class="t-btn" id="draw-toggle" title="رسم على الكتاب">✏️</button>
+                </div>
+            </header>
+            <main id="viewer-viewport" class="custom-scroll">
+                <div id="canvas-wrapper">
+                    <canvas id="canvas-left"></canvas>
+                    <canvas id="canvas-right" style="display:none;"></canvas>
+                    <canvas id="draw-overlay"></canvas>
+                </div>
+            </main>
+            <div class="floating-actions">
+                <button class="f-btn" id="auto-scroll-toggle">🖱️ تمرير تلقائي</button>
+                <div class="v-sep"></div>
+                <button class="f-btn" onclick="window.print()">🖨️ طباعة</button>
+                <button class="f-btn" id="reader-download">📥 تحميل</button>
+            </div>
+            <div id="draw-tools">
+                <label>لون:</label><input type="color" id="draw-color" value="#ff0000">
+                <label>سمك:</label><input type="number" id="draw-width" value="5" min="1" max="20">
+                <button class="t-btn" id="draw-eraser">🧽 محاية</button>
+                <button class="t-btn" id="draw-clear">🗑️ مسح الكل</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل -->
+    <div id="toast"></div>
+    <div class="footer">بواسطة rivl &copy; 2026</div>
+
+    <!-- تحميل ملف JavaScript الرئيسي -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
